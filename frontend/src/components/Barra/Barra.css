@@ -1,0 +1,35 @@
+.menu {
+  padding: 10px 20px !important;
+  background-color: var(--cor-secundaria);
+  -webkit-box-shadow: 0px 0px 21px 5px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 21px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 21px 5px rgba(0, 0, 0, 0.2);
+}
+
+.menu a {
+  color: var(--cor-primaria);
+}
+
+.menu a:hover {
+  color: var(--cor-primaria);
+  opacity: 0.6;
+}
+
+.menuBotoes {
+  font-size: 20px;
+}
+
+.menu .direito {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0 50px;
+}
+
+.react-toggle-track-x, .react-toggle-track-check {
+    height: 1px!important;
+}
+
+.react-toggle-track {
+    font-size: 12px;
+}
