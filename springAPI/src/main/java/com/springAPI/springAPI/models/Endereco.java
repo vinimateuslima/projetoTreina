@@ -18,7 +18,7 @@ public class Endereco {
     @Column(nullable = false, columnDefinition = "INT(11)")
     private int numero;
     @Column(nullable = false, columnDefinition = "CHAR(8)")
-    private int cep;
+    private String cep;
     @Column(nullable = false, length = 100)
     private String bairro;
     @Column(nullable = false, length = 100)
@@ -38,7 +38,9 @@ public class Endereco {
         return idEndereco;
     }
 
-
+    public void setIdEndereco(Long idEndereco) {
+        this.idEndereco = idEndereco;
+    }
 
     public String getLogradouro() {
         return logradouro;
@@ -56,11 +58,11 @@ public class Endereco {
         this.numero = numero;
     }
 
-    public int getCep() {
+    public String getCep() {
         return cep;
     }
 
-    public void setCep(int cep) {
+    public void setCep(String cep) {
         this.cep = cep;
     }
 

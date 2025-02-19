@@ -1,25 +1,26 @@
-import {Outlet} from "react-router-dom";
-import './App.css'
+import { Outlet } from "react-router-dom";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toggle/style.css";
+import Rodape from "./components/Rodape/Rodape";
 import Barra from "./components/Barra/Barra";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import "react-toggle/style.css" 
 
 function App() {
 
+  const hideNavbarRoutes = ["/CadastrarCurriculo"]; 
+
   return (
-    
     <>
-
       <div className="App">
-        <Barra/>
+      {!hideNavbarRoutes.includes(location.pathname) && <Barra />}
         <div className="container">
-        
-          <Outlet/>
+        <Outlet />
         </div>
-      </div>
 
-     </>
-  )
+        <Rodape />
+      </div>
+    </>
+  );
 }
 
-export default App
+export default App;

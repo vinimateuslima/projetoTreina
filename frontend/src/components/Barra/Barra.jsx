@@ -7,12 +7,14 @@ import Image from "react-bootstrap/Image";
 import "./Barra.css";
 import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
 
-const Barra = () => {
+import PropTypes from "prop-types";
+
+const Barra = ({ foto }) => {
   return (
     <>
       <Navbar expand="lg" className="menu">
         <Container fluid>
-          <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
+          <Navbar.Brand href="#">COOLRICLE</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -24,7 +26,12 @@ const Barra = () => {
               <Nav.Link href="#action2">Exibir</Nav.Link>
             </Nav>
             <div className="direito">
-              <Image src="https://placehold.co/70" roundedCircle />
+              <div className="imagem">
+              <Image
+               src={foto ? foto : "https://placehold.co/70"}
+                roundedCircle
+              />
+              </div>
               <DarkModeToggle />
             </div>
           </Navbar.Collapse>
@@ -32,6 +39,10 @@ const Barra = () => {
       </Navbar>
     </>
   );
+};
+
+Barra.propTypes = {
+    foto: PropTypes.string,
 };
 
 export default Barra;

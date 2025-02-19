@@ -4,6 +4,7 @@ import com.springAPI.springAPI.dtos.CurriculoRecordDto;
 import com.springAPI.springAPI.dtos.FormacaoDto;
 import com.springAPI.springAPI.models.*;
 import com.springAPI.springAPI.repositories.*;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -61,44 +62,51 @@ public class CurriculoService {
         endereco = enderecoRepository.save(endereco);
         curriculo.setEndereco(endereco);
 
-        // Relacionando o curriculo a infoAdicional
-        InfoAdicional infoAdicional = curriculoRecordDto.infoAdicional();
-        infoAdicional.setCurriculo(curriculo);
-        curriculo.setInfoAdicional(infoAdicional);
+        if (curriculoRecordDto.infoAdicional() != null) {
+            // Relacionando o curriculo a infoAdicional
+            InfoAdicional infoAdicional = curriculoRecordDto.infoAdicional();
+            infoAdicional.setCurriculo(curriculo);
+            curriculo.setInfoAdicional(infoAdicional);
+        }
 
         curriculoRepository.save(curriculo);
 
-        Set<Experiencia> experiencias = curriculoRecordDto.experiencias();
-        curriculo.setExperiencias(experiencias);
+        if (curriculoRecordDto.experiencias() != null) {
+            Set<Experiencia> experiencias = curriculoRecordDto.experiencias();
+            curriculo.setExperiencias(experiencias);
 
 
-        // Salvando as tabelas relacionadas que dependem da criação do currículo
-        for (Experiencia exp : experiencias) {
-            exp.setCurriculo(curriculo);
-            experienciaRepository.save(exp);
+            // Salvando as tabelas relacionadas que dependem da criação do currículo
+            for (Experiencia exp : experiencias) {
+                exp.setCurriculo(curriculo);
+                experienciaRepository.save(exp);
 
+            }
         }
 
-        Set<Formacao> formacoes = new HashSet<>();
+       if (curriculoRecordDto.formacoes() != null) {
+           Set<Formacao> formacoes = new HashSet<>();
 
 
-        for (FormacaoDto formacaoDto : curriculoRecordDto.formacoes()) {
-            // Buscar a graduação pelo ID
-            Graduacao graduacao = graduacaoRepository.findById(formacaoDto.idGraduacao()).orElseThrow(() -> new RuntimeException("Graduação não encontrada"));
+           for (FormacaoDto formacaoDto : curriculoRecordDto.formacoes()) {
+               // Buscar a graduação pelo ID
+               Graduacao graduacao = graduacaoRepository.findById(formacaoDto.idGraduacao()).orElseThrow(() -> new RuntimeException("Graduação não encontrada"));
 
-            Formacao formacao = new Formacao();
-            formacao.setCurso(formacaoDto.curso());
-            formacao.setAnoInicio(formacaoDto.anoInicio());
-            formacao.setAnoTermino(formacaoDto.anoTermino());
-            formacao.setGraduacao(graduacao);
-            formacao.setCurriculo(curriculo);
-            formacoes.add(formacao);
-            formacaoRepository.save(formacao);
+               Formacao formacao = new Formacao();
+               formacao.setInstituicao(formacaoDto.instituicao());
+               formacao.setCurso(formacaoDto.curso());
+               formacao.setAnoInicio(formacaoDto.anoInicio());
+               formacao.setAnoTermino(formacaoDto.anoTermino());
+               formacao.setGraduacao(graduacao);
+               formacao.setCurriculo(curriculo);
+               formacoes.add(formacao);
+               formacaoRepository.save(formacao);
 
-        }
+           }
 
 
-        curriculo.setFormacoes(formacoes);
+           curriculo.setFormacoes(formacoes);
+       }
 
 
         return curriculo;
@@ -119,11 +127,15 @@ public class CurriculoService {
         if (novoCurriculo.endereco() != null) {
             Endereco endereco = curriculo.getEndereco();
             if (endereco == null) endereco = new Endereco();
+
             endereco.setLogradouro(novoCurriculo.endereco().getLogradouro());
             endereco.setNumero(novoCurriculo.endereco().getNumero());
             endereco.setBairro(novoCurriculo.endereco().getBairro());
             endereco.setCidade(novoCurriculo.endereco().getCidade());
+            endereco.setCep(novoCurriculo.endereco().getCep());
             endereco.setEstado(novoCurriculo.endereco().getEstado());
+
+            endereco = enderecoRepository.save(endereco);
             curriculo.setEndereco(endereco);
         }
 
@@ -145,18 +157,19 @@ public class CurriculoService {
             curriculo.setInfoAdicional(info);
         }
 
-        curriculoRepository.save(curriculo);
+
 
         if (novoCurriculo.experiencias() != null) {
+
+            // Deleta as experiencias antes de inserir novas
             experienciaRepository.deleteAll(curriculo.getExperiencias());
 
             Set<Experiencia> novasExperiencias = novoCurriculo.experiencias();
             for (Experiencia novaExperiencia : novasExperiencias) {
                 novaExperiencia.setCurriculo(curriculo);  // Relaciona com o currículo
-                experienciaRepository.save(novaExperiencia);
             }
 
-            // Atualiza as experiências do currículo
+            // Insere as novas experiências do currículo
             curriculo.setExperiencias(novasExperiencias);
         }
 
@@ -170,18 +183,20 @@ public class CurriculoService {
             for (FormacaoDto novaFormacao : novasFormacoes) {
 
                 // Buscar a graduação pelo ID
-                Graduacao graduacao = graduacaoRepository.findById(novaFormacao.idGraduacao()).get();
+                Graduacao graduacao = graduacaoRepository.findById(novaFormacao.idGraduacao()).orElseThrow(() -> new EntityNotFoundException("Graduação não encontrada"));
 
                 Formacao formacao = new Formacao();
-
+                formacao.setInstituicao(novaFormacao.instituicao());
                 formacao.setGraduacao(graduacao);
                 formacao.setCurso(novaFormacao.curso());
                 formacao.setAnoInicio(novaFormacao.anoInicio());
                 formacao.setAnoTermino(novaFormacao.anoTermino());
                 formacao.setCurriculo(curriculo);
-                formacoes.add(formacao);
 
                 formacaoRepository.save(formacao);
+
+
+                formacoes.add(formacao);
 
             }
 
@@ -189,6 +204,7 @@ public class CurriculoService {
             curriculo.setFormacoes(formacoes);
         }
 
+        curriculoRepository.save(curriculo);
 
         return curriculo;
 

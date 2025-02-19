@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/curriculos")
 public class CurriculoController {
@@ -54,7 +54,7 @@ public class CurriculoController {
     public ResponseEntity<?> cadastrarCurriculo(@RequestBody @Validated CurriculoRecordDto curriculoRecordDto) {
 
 
-        if (curriculoRecordDto.nome().isBlank() || curriculoRecordDto.foto().isBlank() || curriculoRecordDto.telefone() == null || curriculoRecordDto.endereco() == null || curriculoRecordDto.formacoes() == null || curriculoRecordDto.experiencias() == null || curriculoRecordDto.infoAdicional() == null) {
+        if (curriculoRecordDto.nome().isBlank() || curriculoRecordDto.foto().isBlank() || curriculoRecordDto.telefone() == null || curriculoRecordDto.endereco() == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("mensagem", "Os campos não podem estar vázios!"));
 
         }

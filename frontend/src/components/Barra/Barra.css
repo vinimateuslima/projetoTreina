@@ -33,3 +33,15 @@
 .react-toggle-track {
     font-size: 12px;
 }
+
+
+.direito .imagem {
+  width: 70px;
+  height: 70px;
+  overflow: hidden;
+}
+
+.imagem img {
+  width: 100%;
+  height: 100%;
+}

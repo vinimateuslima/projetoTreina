@@ -1,0 +1,20 @@
+.rodape {
+    margin-top: 100px;
+    text-align: center;
+    background-color: #D9D9D9;
+    bottom: 0;
+    width: 100%;
+    position: fixed;
+}
+
+.rodape .row {
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    
+}
+
+.rodape p {
+    margin: 0!important;
+}

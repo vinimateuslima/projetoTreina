@@ -11,19 +11,20 @@
 }
 
 body {
-  --cor-background: #fafafa;
-  --cor-foreground: #1f2023;
+  --color-background: #fafafa;
+  --color-foreground: #1f2023;
   transition: background-color 0.3s, color 0.3s;
 }
 
 body.dark {
   background-color: var(--color-foreground);
-  color: var(--color-foreground);
+  color: var(--color-background);
 }
 
 @media (prefers-color-scheme: dark) {
   body {
     --color-foreground: #1b1b1b;
-    --cor-background: #fafafa;
+    --color-background: #fafafa;
   }
+  
 }

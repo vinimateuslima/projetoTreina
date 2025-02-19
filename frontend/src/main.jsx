@@ -6,6 +6,8 @@ import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import Home from './pages/Home.jsx';
+import ExibirCurriculo from './pages/ExibirCurriculo/ExibirCurriculo'
+import CadastrarCurriculo from './pages/CadastarCurriculo/CadastrarCurriculo.jsx'
 
 const router = createBrowserRouter([
   {
@@ -15,6 +17,15 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />
+      },
+      {
+        path: "/ExibirCurriculo/:id",
+        element: <ExibirCurriculo/>
+      },
+
+      {
+        path: "/CadastrarCurriculo",
+        element: <CadastrarCurriculo/>
       }
     ]
   }

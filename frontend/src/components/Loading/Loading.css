@@ -1,0 +1,12 @@
+.spinner {
+    width: 100px;
+    height: 100px;
+    
+  }
+
+  .loading {
+    display: flex;
+    padding: 100px 0 ;
+    justify-content: center;
+  }
+  
