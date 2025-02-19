@@ -1,0 +1,44 @@
+.card-curriculo {
+    max-width: 400px;
+    display: flex;
+    gap: 10px; 
+}
+
+
+
+.card-name  h5{
+    font-size: 20px;
+}
+
+.card-text {
+    font-size: 15px;
+}
+
+.card-image {
+    max-width: 150px;
+  
+}
+
+.card-image img{
+    width: 150px;
+    height: 150px;
+}
+
+.card-info, .card-address {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-buttons a {
+    color: var(--color-background);
+    text-decoration: none;
+}
+
+.card-buttons Button {
+    width: 100px;
+}

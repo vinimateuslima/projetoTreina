@@ -7,7 +7,11 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../../components/Loading/Loading";
 
+import { useCurriculo } from "../../Context/CurriculoContext";
+
 const ExibirCurriculo = () => {
+  const { setCurriculoFoto, setCurriculoId } = useCurriculo();
+
   const { id } = useParams();
 
   const [curriculo, setCurriculo] = useState(null);
@@ -28,6 +32,8 @@ const ExibirCurriculo = () => {
       })
       .then((curriculo) => {
         setCurriculo(curriculo);
+        setCurriculoFoto(curriculo.foto);
+        setCurriculoId(curriculo.idCurriculo);
         console.log(curriculo);
         setLoading(false);
       })
@@ -132,43 +138,45 @@ const ExibirCurriculo = () => {
 
       <hr />
 
-      <section id="info-adicional">
-        <h4>Informações adicionais</h4>
-        <div className="info-adicional-descricao">
-          <p>
-            LinkedIn:{" "}
-            <span>
-              <a target="_blank" href={infoAdicional.linkedin}>
-                {infoAdicional.linkedin}
-              </a>
-            </span>
-          </p>
-          <p>
-            GitHub:{" "}
-            <span>
-              <a target="_blank" href={infoAdicional.github}>
-                {infoAdicional.github}
-              </a>
-            </span>
-          </p>
-          <p>
-            Instagram:{" "}
-            <span>
-              <a target="_blank" href={infoAdicional.instagram}>
-                {infoAdicional.instagram}
-              </a>
-            </span>
-          </p>
-          <p>
-            Portfólio:{" "}
-            <span>
-              <a target="_blank" href={infoAdicional.portfolio}>
-                {infoAdicional.portfolio}
-              </a>
-            </span>
-          </p>
-        </div>
-      </section>
+      {infoAdicional && (
+        <section id="info-adicional">
+          <h4>Informações adicionais</h4>
+          <div className="info-adicional-descricao">
+            <p>
+              LinkedIn:{" "}
+              <span>
+                <a target="_blank" href={infoAdicional.linkedin}>
+                  {infoAdicional.linkedin}
+                </a>
+              </span>
+            </p>
+            <p>
+              GitHub:{" "}
+              <span>
+                <a target="_blank" href={infoAdicional.github}>
+                  {infoAdicional.github}
+                </a>
+              </span>
+            </p>
+            <p>
+              Instagram:{" "}
+              <span>
+                <a target="_blank" href={infoAdicional.instagram}>
+                  {infoAdicional.instagram}
+                </a>
+              </span>
+            </p>
+            <p>
+              Portfólio:{" "}
+              <span>
+                <a target="_blank" href={infoAdicional.portfolio}>
+                  {infoAdicional.portfolio}
+                </a>
+              </span>
+            </p>
+          </div>
+        </section>
+      )}
     </div>
   );
 };

@@ -3,16 +3,26 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Image from "react-bootstrap/Image";
 
+
 // Css
 import "./Barra.css";
 import DarkModeToggle from "../DarkModeToggle/DarkModeToggle";
 
 import PropTypes from "prop-types";
+import { Link, useLocation } from "react-router-dom";
 
-const Barra = ({ foto }) => {
+import { useCurriculo } from "../../Context/CurriculoContext";
+
+const Barra = () => {
+  const { curriculoFoto, curriculoId } = useCurriculo();
+
+  const location = useLocation();
+
+  const isCurriculoPage = location.pathname.startsWith("/exibir-curriculo");
+
   return (
     <>
-      <Navbar expand="lg" className="menu">
+      <Navbar expand="lg" className="menu" sticky="top">
         <Container fluid>
           <Navbar.Brand href="#">COOLRICLE</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
@@ -22,16 +32,33 @@ const Barra = ({ foto }) => {
               style={{ maxHeight: "100px" }}
               navbarScroll
             >
-              <Nav.Link href="#action1">Editar</Nav.Link>
-              <Nav.Link href="#action2">Exibir</Nav.Link>
+              <Link to={"/"} className="nav-link">
+                Inicio
+              </Link>
+              <Link to={"/cadastrar-curriculo"} className="nav-link">
+                Cadastrar
+              </Link>
+              <Link to={"/curriculos"} className="nav-link">Curriculos</Link>
+              {isCurriculoPage && (
+                <>
+                  <Link className="nav-link">Editar</Link>
+                  <Link className="nav-link" to={`/exibir-curriculo/${curriculoId}`}>
+                    Exibir
+                  </Link>
+                </>
+              )}
             </Nav>
             <div className="direito">
-              <div className="imagem">
-              <Image
-               src={foto ? foto : "https://placehold.co/70"}
-                roundedCircle
-              />
-              </div>
+              {isCurriculoPage && curriculoFoto && (
+                <div className="imagem">
+                  <Image
+                    src={
+                      curriculoFoto ? curriculoFoto : "https://placehold.co/70"
+                    }
+                    roundedCircle
+                  />
+                </div>
+              )}
               <DarkModeToggle />
             </div>
           </Navbar.Collapse>
@@ -42,7 +69,7 @@ const Barra = ({ foto }) => {
 };
 
 Barra.propTypes = {
-    foto: PropTypes.string,
+  foto: PropTypes.string,
 };
 
 export default Barra;
