@@ -1,0 +1,10 @@
+#cadastrar-curriculo h2{
+    padding: 20px 0;
+}
+
+#form-cadastro {
+    display: flex;
+    flex-direction: column;
+    gap: 50px 0;
+    max-width: 900px;
+}

@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface GraduacaoRepository extends JpaRepository<Graduacao, Long> {
 
     Optional<Graduacao> findByNome(String nome);
+
 }

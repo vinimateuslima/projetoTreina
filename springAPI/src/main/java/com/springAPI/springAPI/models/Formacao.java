@@ -28,7 +28,7 @@ public class Formacao implements Serializable {
     private int anoTermino;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "fk_idCurriculo")
     private Curriculo curriculo;
 

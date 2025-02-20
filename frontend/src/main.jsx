@@ -7,8 +7,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import Home from './pages/Home.jsx';
 import ExibirCurriculo from './pages/ExibirCurriculo/ExibirCurriculo'
-import CadastrarCurriculo from './pages/CadastarCurriculo/CadastrarCurriculo.jsx'
+import CadastrarCurriculo from './pages/CadastrarCurriculo/CadastrarCurriculo.jsx'
 import Curriculos from './pages/Curriculos/Curriculos.jsx'
+import EditarCurriculo from './pages/EditarCurriculo/EditarCurriculo.jsx'
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/exibir-curriculo/:id",
         element: <ExibirCurriculo/>
+      },
+      {
+        path: "/editar-curriculo/:id",
+        element: <EditarCurriculo/>
       },
 
       {

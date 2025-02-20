@@ -18,7 +18,7 @@ const Barra = () => {
 
   const location = useLocation();
 
-  const isCurriculoPage = location.pathname.startsWith("/exibir-curriculo");
+  const isCurriculoPage = location.pathname.startsWith("/exibir-curriculo") || location.pathname.startsWith("/editar-curriculo");
 
   return (
     <>
@@ -41,7 +41,7 @@ const Barra = () => {
               <Link to={"/curriculos"} className="nav-link">Curriculos</Link>
               {isCurriculoPage && (
                 <>
-                  <Link className="nav-link">Editar</Link>
+                  <Link className="nav-link" to={`/editar-curriculo/${curriculoId}`}>Editar</Link>
                   <Link className="nav-link" to={`/exibir-curriculo/${curriculoId}`}>
                     Exibir
                   </Link>

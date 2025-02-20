@@ -1,0 +1,21 @@
+#home h1 {
+  padding: 100px 0;
+  font-size: 50px;
+  text-align: center;
+}
+
+#home h1 span {
+  color: var(--cor-primaria);
+  font-style: italic;
+}
+
+#home .botoes {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+#home .botoes button {
+  padding: 10px 50px;
+  font-size: 20px;
+}

@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 
-const CardCurriculo = ({ foto, nome, estado, tel, bairro, cidade, id }) => {
+const CardCurriculo = ({ foto, nome, estado, tel, bairro, cidade, id, deletarCurriculo }) => {
   return (
     <div className="card-curriculo">
       <div className="card-image">
@@ -34,8 +34,8 @@ const CardCurriculo = ({ foto, nome, estado, tel, bairro, cidade, id }) => {
             <Button variant="primary">Ver</Button>
           </Link>
 
-          <Button variant="danger">
-            <Link>Excluir</Link>
+          <Button variant="danger" onClick={deletarCurriculo}>
+            Excluir
           </Button>
         </div>
       </div>

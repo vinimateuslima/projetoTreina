@@ -9,6 +9,9 @@ import Loading from "../../components/Loading/Loading";
 
 import { useCurriculo } from "../../Context/CurriculoContext";
 
+// Icons
+import { FaGithub, FaLinkedin, FaInstagram, FaGlobe, FaWhatsapp  } from "react-icons/fa";
+
 const ExibirCurriculo = () => {
   const { setCurriculoFoto, setCurriculoId } = useCurriculo();
 
@@ -51,6 +54,15 @@ const ExibirCurriculo = () => {
 
   const { formacoes, experiencias, endereco, infoAdicional } = curriculo;
 
+  const formacoesOrdenada = formacoes.sort((a, b) => {
+    const idGraduacaoA = a.graduacao.idGraduacao;
+    const idGraduacaoB = b.graduacao.idGraduacao;
+
+    return idGraduacaoB - idGraduacaoA; // Ordem crescente
+  });
+
+  console.log(formacoesOrdenada);
+
   return (
     <div id="exibir-curriculo" className="container">
       <section id="info-pessoal">
@@ -60,7 +72,8 @@ const ExibirCurriculo = () => {
             Nome: <span>{infoPessoal.nome}</span>
           </p>
           <p>
-            Telefone: <span>{curriculo.telefone}</span>
+            Telefone : <span>{curriculo.telefone}</span> <FaWhatsapp />
+
           </p>
           <p>
             Endereço:
@@ -81,22 +94,22 @@ const ExibirCurriculo = () => {
             formacoes.map((formacao) => (
               <div key={formacao.idFormacao}>
                 <p>
-                  Instituição: <span>{formacoes[0].instituicao}</span>
+                  Instituição: <span>{formacao.instituicao}</span>
                 </p>
 
                 <p>
-                  Curso: <span>Análise e Desenvolvimento de Sistemas</span>
+                  Curso: <span>{formacao.curso}</span>
                 </p>
                 <p>
-                  Graduação: <span>Tecnólogo</span>
+                  Graduação: <span>{formacao.graduacao.nome}</span>
                 </p>
 
                 <div className="periodo">
                   <p>
-                    Ano Inicio: <span>2021</span>
+                    Ano Inicio: <span>{formacao.anoInicio}</span>
                   </p>
                   <p>
-                    Ano Término: <span>2023</span>
+                    Ano Término: <span>{formacao.anoTermino}</span>
                   </p>
                 </div>
               </div>
@@ -143,7 +156,7 @@ const ExibirCurriculo = () => {
           <h4>Informações adicionais</h4>
           <div className="info-adicional-descricao">
             <p>
-              LinkedIn:{" "}
+              LinkedIn <FaLinkedin /> :
               <span>
                 <a target="_blank" href={infoAdicional.linkedin}>
                   {infoAdicional.linkedin}
@@ -151,7 +164,7 @@ const ExibirCurriculo = () => {
               </span>
             </p>
             <p>
-              GitHub:{" "}
+              GitHub <FaGithub /> :
               <span>
                 <a target="_blank" href={infoAdicional.github}>
                   {infoAdicional.github}
@@ -159,7 +172,7 @@ const ExibirCurriculo = () => {
               </span>
             </p>
             <p>
-              Instagram:{" "}
+              Instagram <FaInstagram />:
               <span>
                 <a target="_blank" href={infoAdicional.instagram}>
                   {infoAdicional.instagram}
@@ -167,7 +180,7 @@ const ExibirCurriculo = () => {
               </span>
             </p>
             <p>
-              Portfólio:{" "}
+              Portfólio <FaGlobe />:
               <span>
                 <a target="_blank" href={infoAdicional.portfolio}>
                   {infoAdicional.portfolio}

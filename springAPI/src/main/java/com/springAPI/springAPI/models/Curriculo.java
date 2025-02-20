@@ -23,8 +23,6 @@ public class Curriculo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCurriculo;
 
-
-
     @Column(nullable = false)
     private String nome;
 
@@ -39,6 +37,7 @@ public class Curriculo implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_idEndereco")
     private Endereco endereco;
+
    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "curriculo", cascade = CascadeType.ALL)
     private Set<Experiencia> experiencias = new HashSet<>();

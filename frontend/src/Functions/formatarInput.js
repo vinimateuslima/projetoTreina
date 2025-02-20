@@ -1,5 +1,9 @@
 export const formatarInput = (valor, tipo) => {
     let numero = valor.replace(/\D/g, "");
+
+    if (tipo === "numero") {
+      numero = numero.slice(0, 4)
+    }
   
     // Formatar Telefone
     if (tipo === "telefone") {

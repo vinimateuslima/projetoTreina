@@ -6,8 +6,13 @@ import { formatarInput } from "../../Functions/formatarInput";
 
 // CSS
 import "./CadastrarCurriculo.css";
+
 import { Col, Row } from "react-bootstrap";
 import Formacao from "../../components/Formacao/Formacao";
+import Experiencia from "../../components/Experiencia/Experiencia";
+
+//Icons
+import { FaGithub, FaLinkedin, FaInstagram, FaGlobe } from "react-icons/fa";
 
 import { useState } from "react";
 
@@ -23,6 +28,53 @@ const CadastrarCurriculo = () => {
     numero: "",
     logradouro: "",
   });
+  const [formacoes, setFormacoes] = useState([
+    {
+      instituicao: "",
+      curso: "",
+      anoInicio: "",
+      anoTermino: "",
+      idGraduacao: 1,
+    },
+  ]);
+  const [experiencias, setExperiencias] = useState([
+    {
+      funcao: "",
+      empresa: "",
+      anoInicio: "",
+      anoTermino: "",
+    },
+  ]);
+
+  const [infoAdicional, setInfoAdicional] = useState({
+    linkedin: "",
+    github: "",
+    instagram: "",
+    portfolio: "",
+  });
+
+  const limparCampos = () => {
+    setNome("");
+    setTelefone("");
+    setFoto("");
+    setEndereco({
+      cep: "",
+      bairro: "",
+      cidade: "",
+      estado: "",
+      numero: "",
+      logradouro: "",
+    });
+    setFormacoes([
+      {
+        instituicao: "",
+        curso: "",
+        anoInicio: "",
+        anoTermino: "",
+        idGraduacao: 1,
+      },
+    ]);
+  };
 
   const updateNome = (e) => {
     setNome(e.target.value);
@@ -39,55 +91,84 @@ const CadastrarCurriculo = () => {
 
   const updateEndereco = (e) => {
     let value = e.target.value;
+    let name = e.target.name;
 
-    if (e.target.name == "cep") {
+    if (name === "numero") {
+      value = formatarInput(value, "numero");
+    }
+
+    if (name == "cep") {
       // Formata o CEP com a mascara
       value = formatarInput(value, "cep");
+
       // Busca o cep formatado mas antes remove traço -
       buscarCep(value.replace(/\D/g, ""));
     }
 
     setEndereco((prevEndereco) => ({
       ...prevEndereco,
-      [e.target.name]: value,
+      [name]: value,
+    }));
+  };
+
+  const updateInfo = (e) => {
+    let value = e.target.value;
+    let name = e.target.name;
+
+    setInfoAdicional((prevInfoAdicional) => ({
+      ...prevInfoAdicional,
+      [name]: value,
     }));
   };
 
   const buscarCep = async (cep) => {
     if (cep.length == 8) {
-      console.log("disparou");
       try {
         const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
         const data = await response.json();
-        if (!data.erro) {
-          setEndereco((prevEndereco) => ({
-            ...prevEndereco,
-            bairro: data.bairro,
-            cidade: data.localidade,
-            estado: data.uf,
-            logradouro: data.logradouro,
-          }));
+
+        if (data.erro) {
+          console.log("Erro ao buscar o CEP! Digite um CEP válido!");
+          return;
         }
+
+        setEndereco((prevEndereco) => ({
+          ...prevEndereco,
+          bairro: data.bairro,
+          cidade: data.localidade,
+          estado: data.uf,
+          logradouro: data.logradouro,
+        }));
       } catch (error) {
         console.error("Erro ao buscar CEP:", error);
       }
     }
   };
 
-  const [formacoes, setFormacoes] = useState([
-    {
-      instituicao: "",
-      curso: "",
-      graduacao: "",
-      anoInicio: "",
-      anoTermino: "",
-    },
-  ]);
-
   const atualizarFormacao = (index, event) => {
+    let value = event.target.value;
+    let name = event.target.name;
+
+    if (name === "anoInicio" || name === "anoTermino") {
+      value = formatarInput(value, "numero");
+    }
+
     const values = [...formacoes];
-    values[index][event.target.name] = event.target.value;
+    values[index][name] = value;
     setFormacoes(values);
+  };
+
+  const atualizarExperiencia = (index, event) => {
+    let value = event.target.value;
+    let name = event.target.name;
+
+    if (name === "anoInicio" || name === "anoTermino") {
+      value = formatarInput(value, "numero");
+    }
+
+    const values = [...experiencias];
+    values[index][name] = value;
+    setExperiencias(values);
   };
 
   const adicionarFormacao = () => {
@@ -96,21 +177,65 @@ const CadastrarCurriculo = () => {
       {
         instituicao: "",
         curso: "",
-        graduacao: "",
+        anoInicio: "",
+        anoTermino: "",
+        idGraduacao: 1,
+      },
+    ]);
+  };
+
+  const adicionarExperiencia = () => {
+    setExperiencias([
+      ...experiencias,
+      {
+        funcao: "",
+        empresa: "",
         anoInicio: "",
         anoTermino: "",
       },
     ]);
   };
-
   const removerFormacao = (index) => {
     const values = [...formacoes];
     values.splice(index, 1);
     setFormacoes(values);
   };
 
+  const removerExperiencia = (index) => {
+    const values = [...experiencias];
+    values.splice(index, 1);
+    setExperiencias(values);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    let anoInconsistente = "";
+    let anoInconsistenteExp = "";
+
+    formacoes.map((formacao) => {
+      if (formacao.anoInicio > formacao.anoTermino) {
+        anoInconsistente = `Ano Inicio da formação ${formacao.curso} não pode ser maior que o do término`;
+
+        return;
+      }
+    });
+
+    if (anoInconsistente != "") {
+      return alert(anoInconsistente);
+    }
+
+    experiencias.map((experiencia) => {
+      if (experiencia.anoInicio > experiencia.anoTermino) {
+        anoInconsistenteExp = `Ano Inicio da experiência da ${experiencia.empresa} não pode ser maior que o do término`;
+
+        return;
+      }
+    });
+
+    if (anoInconsistenteExp != "") {
+      return alert(anoInconsistenteExp);
+    }
 
     const curriculo = {
       nome: nome,
@@ -119,10 +244,11 @@ const CadastrarCurriculo = () => {
       endereco: {
         ...endereco,
         cep: endereco.cep.replace("-", ""), // Remove o traço do cep
-      }
+      },
+      formacoes: formacoes,
+      experiencias: experiencias,
+      infoAdicional: infoAdicional,
     };
-
-    console.log(curriculo)
 
     const url = "http://localhost:8080/curriculos";
     fetch(url, {
@@ -142,14 +268,13 @@ const CadastrarCurriculo = () => {
         return response.json();
       })
       .then((curriculo) => {
+        alert("Curriculo cadastrado com sucesso!");
+        limparCampos();
         console.log(curriculo);
       })
       .catch((error) => {
         console.log(error.message);
       });
-
-    console.log("Dados enviados:", formacoes);
-    console.log(endereco);
   };
 
   return (
@@ -168,6 +293,7 @@ const CadastrarCurriculo = () => {
                   type="text"
                   placeholder="Digite o seu nome"
                   onChange={updateNome}
+                  value={nome}
                   required
                 />
               </Form.Group>
@@ -193,6 +319,7 @@ const CadastrarCurriculo = () => {
                   type="text"
                   placeholder="Cole a url da sua imagem"
                   onChange={updateFoto}
+                  value={foto}
                   required
                 />
               </Form.Group>
@@ -274,6 +401,7 @@ const CadastrarCurriculo = () => {
                     updateEndereco(e);
                   }}
                   placeholder="150..."
+                  maxLength={4}
                   required
                 />
               </Form.Group>
@@ -315,10 +443,113 @@ const CadastrarCurriculo = () => {
           </Button>
         </section>
 
-        <section id="experiencia"></section>
+        <section id="experiencia">
+          <h4>Experiência</h4>
+          {experiencias.map((experiencia, index) => (
+            <Experiencia
+              key={index}
+              index={index}
+              experiencia={experiencia}
+              onChange={(e) => atualizarExperiencia(index, e)}
+              onRemove={removerExperiencia}
+            />
+          ))}
 
+          <Button
+            variant="primary"
+            className="mt-3"
+            onClick={adicionarExperiencia}
+          >
+            + Adicionar Experiência
+          </Button>
+        </section>
+
+        <section id="info-adicional">
+          <h4>Informação adicional</h4>
+          <Row className="g-3 align-items-center">
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label>
+                  Linkedin <FaLinkedin />
+                </Form.Label>
+                <Form.Control
+                  id="linkedin"
+                  name="linkedin"
+                  type="text"
+                  placeholder="https://linkedin.com"
+                  onChange={(e) => {
+                    updateInfo(e);
+                  }}
+                  value={infoAdicional.linkedin}
+                  maxLength={512}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label>
+                  GitHub <FaGithub />
+                </Form.Label>
+                <Form.Control
+                  id="github"
+                  name="github"
+                  type="text"
+                  placeholder="https://github.com"
+                  onChange={(e) => {
+                    updateInfo(e);
+                  }}
+                  value={infoAdicional.github}
+                  maxLength={512}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label>
+                  Instagram <FaInstagram />
+                </Form.Label>
+                <Form.Control
+                  id="instagram"
+                  name="instagram"
+                  type="text"
+                  placeholder="https://instagram.com"
+                  onChange={(e) => {
+                    updateInfo(e);
+                  }}
+                  value={infoAdicional.instagram}
+                  maxLength={512}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group>
+                <Form.Label>
+                  Portfólio <FaGlobe />
+                </Form.Label>
+                <Form.Control
+                  id="portfolio"
+                  name="portfolio"
+                  type="text"
+                  placeholder="https://portfolio.com"
+                  onChange={(e) => {
+                    updateInfo(e);
+                  }}
+                  value={infoAdicional.portfolio}
+                  maxLength={512}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+        </section>
         <Button variant="primary" type="submit">
-          Submit
+          Enviar
         </Button>
       </Form>
     </div>

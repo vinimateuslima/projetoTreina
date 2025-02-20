@@ -6,6 +6,7 @@ import com.springAPI.springAPI.models.*;
 import com.springAPI.springAPI.repositories.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -17,12 +18,17 @@ import java.util.stream.Collectors;
 @Service
 public class CurriculoService {
 
+    @Autowired
     private final CurriculoRepository curriculoRepository;
+    @Autowired
     private final EnderecoRepository enderecoRepository;
+    @Autowired
     private final ExperienciaRepository experienciaRepository;
 
+    @Autowired
     private final FormacaoRepository formacaoRepository;
 
+    @Autowired
     private final GraduacaoRepository graduacaoRepository;
 
     private final InfoAdicionalRepository infoAdicionalRepository;
@@ -39,6 +45,7 @@ public class CurriculoService {
 
     @Transactional
     public List<Curriculo> buscarTodosOsCurriculos() {
+
         return curriculoRepository.findAll();
     }
 
@@ -52,20 +59,21 @@ public class CurriculoService {
 
         Curriculo curriculo = new Curriculo();
 
-        // Setando as informações do Body no objeto curriculo
-        curriculo.setNome(curriculoRecordDto.nome());
-        curriculo.setTelefone(curriculoRecordDto.telefone());
-        curriculo.setFoto(curriculoRecordDto.foto());
-
         // Salvando o endereço primeiro para gera o id
         Endereco endereco = curriculoRecordDto.endereco();
         endereco = enderecoRepository.save(endereco);
         curriculo.setEndereco(endereco);
 
+        // Setando as informações do Body no objeto curriculo
+        curriculo.setNome(curriculoRecordDto.nome());
+        curriculo.setTelefone(curriculoRecordDto.telefone());
+        curriculo.setFoto(curriculoRecordDto.foto());
+
         if (curriculoRecordDto.infoAdicional() != null) {
             // Relacionando o curriculo a infoAdicional
             InfoAdicional infoAdicional = curriculoRecordDto.infoAdicional();
             infoAdicional.setCurriculo(curriculo);
+
             curriculo.setInfoAdicional(infoAdicional);
         }
 
@@ -74,7 +82,6 @@ public class CurriculoService {
         if (curriculoRecordDto.experiencias() != null) {
             Set<Experiencia> experiencias = curriculoRecordDto.experiencias();
             curriculo.setExperiencias(experiencias);
-
 
             // Salvando as tabelas relacionadas que dependem da criação do currículo
             for (Experiencia exp : experiencias) {
@@ -87,17 +94,18 @@ public class CurriculoService {
        if (curriculoRecordDto.formacoes() != null) {
            Set<Formacao> formacoes = new HashSet<>();
 
-
            for (FormacaoDto formacaoDto : curriculoRecordDto.formacoes()) {
+               Formacao formacao = new Formacao();
+
                // Buscar a graduação pelo ID
                Graduacao graduacao = graduacaoRepository.findById(formacaoDto.idGraduacao()).orElseThrow(() -> new RuntimeException("Graduação não encontrada"));
 
-               Formacao formacao = new Formacao();
+               formacao.setGraduacao(graduacao);
+
                formacao.setInstituicao(formacaoDto.instituicao());
                formacao.setCurso(formacaoDto.curso());
                formacao.setAnoInicio(formacaoDto.anoInicio());
                formacao.setAnoTermino(formacaoDto.anoTermino());
-               formacao.setGraduacao(graduacao);
                formacao.setCurriculo(curriculo);
                formacoes.add(formacao);
                formacaoRepository.save(formacao);
@@ -115,13 +123,11 @@ public class CurriculoService {
 
     @Transactional
     public Curriculo atualizarCurriculo(Long id, CurriculoRecordDto novoCurriculo) {
+
+        // Buscando o currículo na base de dados
         Curriculo curriculo = curriculoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Currículo não encontrado"));
 
-
-        curriculo.setNome(novoCurriculo.nome());
-        curriculo.setTelefone(novoCurriculo.telefone());
-        curriculo.setFoto(novoCurriculo.foto());
 
         // Atualizando endereço
         if (novoCurriculo.endereco() != null) {
@@ -139,8 +145,16 @@ public class CurriculoService {
             curriculo.setEndereco(endereco);
         }
 
+
+        // Setand as informações do currículo
+        curriculo.setNome(novoCurriculo.nome());
+        curriculo.setTelefone(novoCurriculo.telefone());
+        curriculo.setFoto(novoCurriculo.foto());
+
+
         // Atualizando info adicional
         if (novoCurriculo.infoAdicional() != null) {
+
             InfoAdicional novoInfo = novoCurriculo.infoAdicional();
 
             InfoAdicional info = curriculo.getInfoAdicional();
@@ -155,9 +169,9 @@ public class CurriculoService {
             info.setPortfolio(novoInfo.getPortfolio());
 
             curriculo.setInfoAdicional(info);
+
+
         }
-
-
 
         if (novoCurriculo.experiencias() != null) {
 
@@ -165,6 +179,7 @@ public class CurriculoService {
             experienciaRepository.deleteAll(curriculo.getExperiencias());
 
             Set<Experiencia> novasExperiencias = novoCurriculo.experiencias();
+
             for (Experiencia novaExperiencia : novasExperiencias) {
                 novaExperiencia.setCurriculo(curriculo);  // Relaciona com o currículo
             }
@@ -173,7 +188,10 @@ public class CurriculoService {
             curriculo.setExperiencias(novasExperiencias);
         }
 
+        curriculoRepository.save(curriculo);
+
         if (novoCurriculo.formacoes() != null) {
+
             formacaoRepository.deleteAll(curriculo.getFormacoes());
 
             Set<FormacaoDto> novasFormacoes = novoCurriculo.formacoes();
@@ -204,7 +222,7 @@ public class CurriculoService {
             curriculo.setFormacoes(formacoes);
         }
 
-        curriculoRepository.save(curriculo);
+
 
         return curriculo;
 

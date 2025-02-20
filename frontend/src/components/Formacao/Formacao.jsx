@@ -22,6 +22,7 @@ const Formacao = ({index, formacao, onChange, onRemove}) => {
                   placeholder="Faculdade..."
                   value={formacao.instituicao}
                   onChange={onChange}
+                  maxLength={255}
                   required
                 />
               </Form.Group>
@@ -45,20 +46,22 @@ const Formacao = ({index, formacao, onChange, onRemove}) => {
             <Col md={4}>
               <Form.Group>
                 <Form.Label>Graduação</Form.Label>
-                <Form.Select name='graduacao' onChange={onChange}>
-                  <option value={1}>Bacharelado</option>
+                <Form.Select value={formacao.idGraduacao} defaultValue={1} name='idGraduacao' onChange={onChange}>
+                  <option value={1}>Tecnólogo</option>
                   <option value={2}>Licenciatura</option>
-                  <option value={3}>Tecnológo</option>
-                  <option value={4}>Mestrado</option>
+                  <option value={3}>Bacharelado</option>
+                  <option value={4}>Pós-Graduação</option>
                   <option value={5}>MBA</option>
                   <option value={6}>Especialização</option>
+                  <option value={7}>Mestrado</option>
+                  <option value={8}>Doutorado</option>
                 </Form.Select>
               </Form.Group>
             </Col>
           </Row>
 
           <Row>
-          <Col md={3}>
+          <Col md={4}>
               <Form.Group>
                 <Form.Label>Ano início</Form.Label>
                 <Form.Control
@@ -72,7 +75,7 @@ const Formacao = ({index, formacao, onChange, onRemove}) => {
                 />
               </Form.Group>
             </Col>
-            <Col md={3}>
+            <Col md={4}>
               <Form.Group>
                 <Form.Label>Ano Término - ou previsto</Form.Label>
                 <Form.Control
