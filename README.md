@@ -1,4 +1,4 @@
-# Projeto Final Treian
+# Projeto Final Treina
 Este projeto é uma página de administração de currículos feito utilizando Spring Boot e React para o projeto final proposto pelo professor João Ferreira do Curso de Desenvolvimento Full Stack da Treina Recife.
 
 
@@ -27,6 +27,8 @@ Primeiro, faça o clone do repositório para o seu ambiente local:
 git clone https://github.com/vinimateuslima/projetoTreina.git
 ```
 
+## Spring Api
+
 ### 🍃 Configuração do Back End
 
 ### 2. Crie uma base de dados no MySQL WorkBench chamada "springapidb" e um usuário e senha chamado "treina"
@@ -47,6 +49,8 @@ spring.datasource.url=jdbc:mysql://localhost:3306/springapidb?useSSL=false&serve
 spring.datasource.username=treina
 spring.datasource.password=treina
 ```
+
+*Se preferir você pode criar um banco de dados com qualquer nome e usuário, desde que atualize o arquivo application.properties e essas variáveis com os dados do seu banco*
 
 ### 4. Inicialize o Spring Boot e verifique se ele criará as tabelas automaticamente
 
@@ -84,24 +88,62 @@ Você pode utilizar as seguintes rotas para teste
 - ![PUT](https://img.shields.io/badge/PUT-orange)  `PUT /curriculos/{id}` - **Atualiza um currículo existente**  
 - ![DELETE](https://img.shields.io/badge/DELETE-red) `DELETE /curriculos/{id}` - **Deleta um currículo pelo ID**
 
-Você pode utilizar um JSON como exemplo de cadastro neste link [Gist aqui](https://gist.github.com/seu_usuario/gist_id).
+Exemplo de JSON para cadastro
+
+```json
+{
+  "nome": "Nicolas Cage",
+  "telefone": 11987654321,
+  "foto": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Nicolas_Cage_Deauville_2013.jpg",
+ 
+  "endereco": {
+    "cep": 50601510,
+    "logradouro": "Rua ABC",
+    "numero": "123",
+    "bairro": "Centro",
+    "cidade": "São Paulo",
+    "estado": "SP"
+  }
+```
+
+Você pode visualizar este JSON completo [neste link](https://github.com/vinimateuslima/projetoTreina/blob/master/JSON).
+
+## Frontend
+
+### ⚛️ Configuração do Front End
+
+![image](https://github.com/user-attachments/assets/d7187ea5-156d-4414-a000-2db82221cf6e)
+
+### 1. Em sua IDE acesse a pasta frontend e execute o comando para instalar os pacotes do Node
+```cmd
+npm install
+```
+*Caso apareça algum errro de dependencia adicione o --force no final do comando*
+
+### 2. Após instalar as dependências necessárias executo o comando para inciar o React
+```cmd
+npm run dev
+```
+
+### 3. Abra o endereço fornecido pelo React e teste a aplicação
+
+Você pode navegar entre as seguintes telas:
+
+### Telas
+
+- `Inicio` **Tela inicial**
+- `Curriculos` **Visualiza todos os currículos cadastrados, nela você pode vsualizar e deletar os currículos**
+- `Exibir` **Exibe o currículo selecionado na tela anterior**
+- `Editar` **Edita o currículo selecionado na tela anterior**
+- `Cadastrar` **Cadastro de currículos**
+
+![image](https://github.com/user-attachments/assets/9c426284-ab8d-4209-94d4-a369012d479c)
+
+  
 
 
+## Obrigado!
 
-
-*Se preferir você pode criar um banco de dados com qualquer nome e usuário, desde que atualize o arquivo application.properties e essas variáveis com os dados do seu banco*
-
-
-
-
-
-
-
-
-
-## ⚙️ Executando os testes
-
-Para executar o programa compile a classe UrnaEletronicaJava.java e execute
 
 
 ## 🛠️ Construído com
