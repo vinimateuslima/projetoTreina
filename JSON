@@ -1,0 +1,56 @@
+{
+  "nome": "Nicolas Cage",
+  "telefone": 11987654321,
+  "foto": "https://upload.wikimedia.org/wikipedia/commons/c/c0/Nicolas_Cage_Deauville_2013.jpg",
+ 
+  "endereco": {
+    "cep": 50601510,
+    "logradouro": "Rua ABC",
+    "numero": "123",
+    "bairro": "Centro",
+    "cidade": "São Paulo",
+    "estado": "SP"
+  },
+  "formacoes": [
+    {
+        "instituicao": "Faculdade Imaculada da Conceição",
+        "curso": "Análise e Desenvolvimento de Sistemas",
+        "anoInicio": 2021,
+        "anoTermino": 2023,
+        "idGraduacao": 1
+    },
+
+    {
+        "instituicao": "Faculdade Imaculada da Conceição",
+        "curso": "Análise e Desenvolvimento de Sistemas",
+        "anoInicio": 2021,
+        "anoTermino": 2023,
+        "idGraduacao": 2
+    }
+  ],
+
+  "experiencias": [
+    {
+      "funcao": "Desenvolvedor Java",
+      "empresa": "Empresa X",
+      "anoInicio": 2019,
+      "anoTermino": 2022
+    },
+
+    {
+      "funcao": "Desenvolvedor Python",
+      "empresa": "Empresa Y",
+      "anoInicio": 2022,
+      "anoTermino": ""
+      
+    }
+
+    
+  ],
+  "infoAdicional": {
+    "github": "http://linkedin.com",
+    "linkedin": "http://github.om",
+    "instagram": "http://instagram.com",
+    "portfolio": "http://linkdoportfolio.com"
+  }
+}
